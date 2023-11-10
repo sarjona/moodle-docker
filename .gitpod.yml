@@ -30,6 +30,18 @@ tasks:
       # Open Moodle site in browser.
       gp ports await 8000 && gp preview $(gp url 8000)
 
+      # Initialise behat to add some data.
+      wget -O moodle/admin/tool/behat/tests/fixtures/core/basicdata.feature https://gist.githubusercontent.com/sarjona/8f96ca6ac172bfe0ca210b9e831f2544/raw/basicdata.feature
+      cd moodle
+      git fetch https://github.com/sarjona/moodle/ MDL-behatmacro-master
+      git checkout FETCH_HEAD
+      cd ..
+      bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
+      bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/testscenario.php --feature=./../tests/fixtures/core/basicdata.feature
+      cd moodle
+      git checkout -
+      cd ..
+
     command: |
       # Update the patch to the latest version.
       cd moodle
