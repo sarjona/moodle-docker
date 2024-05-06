@@ -342,6 +342,7 @@ The Moodle Gitpod template supports the following environment variables:
 * `MOODLE_REPOSITORY`. The Moodle repository to be cloned. The value should be URL encoded. If left undefined, the default repository `https://github.com/moodle/moodle.git` is used.
 * `MOODLE_BRANCH`. The Moodle branch to be cloned. If left undefined, the default branch `main` is employed.
 * `DATAFILE`. When specified, this feature file initializes the Moodle site with essential data. The value should be URL encoded.
+* `INSTALLADMINER`. Add this variable, set to any value, to install adminer.
 
 For a practical demonstration, launch a Gitpod workspace with the 'main' branch patch for [MDL-79912](https://tracker.moodle.org/browse/MDL-79912). Simply open the following URL in your web browser (note that MOODLE_REPOSITORY should be URL encoded). The password for the **admin** user is **test**:
 
