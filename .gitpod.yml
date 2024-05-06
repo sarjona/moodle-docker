@@ -30,6 +30,10 @@ tasks:
       # Open Moodle site in browser.
       gp ports await 8000 && gp preview $(gp url 8000)
 
+      # Initialise behat to add some data.
+      cp .gitpod/gitpod-basic-scenario.feature moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature
+      bin/moodle-docker-compose exec webserver php admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
+
     command: |
       # Update the patch to the latest version.
       cd moodle
