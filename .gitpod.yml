@@ -37,6 +37,11 @@ tasks:
       cp .gitpod/gitpod-basic-scenario.feature moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature
       bin/moodle-docker-compose exec webserver php admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
 
+      # Initialise config settings.
+      bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=enablewebservices --set=1
+      bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=enablemobilewebservice --set=1
+      bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=import_general_duplicate_admin_allowed --component=backup --set=1
+
     command: |
       # Update the patch to the latest version.
       cd moodle
@@ -50,8 +55,12 @@ tasks:
       # Wait for DB to come up.
       bin/moodle-docker-wait-for-db
 
+image: adminer:latest
+
 ports:
   - port: 8000
     name: Moodle server
     visibility: public
+    onOpen: ignore
+  - port: 8080
     onOpen: ignore
