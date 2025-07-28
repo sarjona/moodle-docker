@@ -4,12 +4,20 @@ tasks:
     before: |
       # Set up Moodle docker environment vars.
       export COMPOSE_PROJECT_NAME=moodle-gitpod
-      export MOODLE_DOCKER_WWWROOT="$GITPOD_REPO_ROOT"/moodle
+      export MOODLE_DOCKER_WWWROOT="$GITPOD_REPO_ROOT"/moodle/public
       export MOODLE_DOCKER_DB=pgsql
 
     init: |
       # Set up Moodle repository.
       .gitpod/setup-env.sh
+
+      publicprefix='';
+      if [ ! -d "$MOODLE_DOCKER_WWWROOT/public" ];
+      then
+        # Create public directory.
+        mkdir -p "$MOODLE_DOCKER_WWWROOT/public";
+        publicprefix='public/';
+      fi
 
       # Ensure customized config.php for the Docker containers is in place
       cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
@@ -21,7 +29,7 @@ tasks:
       bin/moodle-docker-wait-for-db
 
       # Initialize Moodle database for manual testing.
-      bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com"
+      bin/moodle-docker-compose exec webserver php ${publicprefix}admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com"
 
       # Hack to avoid when the workspace is restarted.
       # It can be removed when https://github.com/gitpod-io/gitpod/issues/17551 is fixed.
@@ -34,9 +42,9 @@ tasks:
       bin/moodle-docker-compose exec webserver bash -c 'chmod -R 777 .'
 
       # Add some data if the file exists.
-      if [ -r "moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature" ];
+      if [ -r "moodle/${publicprefix}admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature" ];
       then
-        bin/moodle-docker-compose exec webserver php admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
+        bin/moodle-docker-compose exec webserver php ${publicprefix}admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
       fi
 
     command: |

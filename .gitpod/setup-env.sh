@@ -21,7 +21,7 @@ cd "${GITPOD_REPO_ROOT}" && git clone ${FASTCLONE} --branch "${MOODLE_BRANCH}" -
 # Download the data file (if given). It will be used to generate some data.
 if [ -n "$DATAFILE" ];
 then
-    wget -O moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature "${DATAFILE}"
+    wget -O moodle/public/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature "${DATAFILE}"
 fi
 
 # Install adminer.

@@ -48,6 +48,10 @@ if (strpos($_SERVER['HTTP_HOST'], '.gitpod.io') !== false) {
     }
 }
 
+if (str_contains(getcwd(), '/public')) {
+    $CFG->wwwroot .= '/public';
+}
+
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
