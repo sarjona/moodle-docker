@@ -34,9 +34,9 @@ tasks:
       bin/moodle-docker-compose exec webserver bash -c 'chmod -R 777 .'
 
       # Add some data if the file exists.
-      if [ -r "moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature" ];
+      if [ -r "${MOODLE_PUBLIC_ROOT}/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature" ];
       then
-        bin/moodle-docker-compose exec webserver php admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
+        bin/moodle-docker-compose exec webserver php ${MOODLE_PUBLIC_ROOT}admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
       fi
 
     command: |
